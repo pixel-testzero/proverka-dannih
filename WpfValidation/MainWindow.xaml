@@ -1,0 +1,116 @@
+﻿<Window x:Class="WpfValidation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Проверка данных" Height="520" Width="460"
+        Background="#F0F4F8"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#B0C4DE"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="BorderBrush" Value="#E53935"/>
+                    <Setter Property="Background" Value="#FFF5F5"/>
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self},
+                                   Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1E3A5F"/>
+            <Setter Property="Margin" Value="0,10,0,3"/>
+        </Style>
+
+        <Style x:Key="ErrorStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#E53935"/>
+            <Setter Property="Margin" Value="2,2,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="28,20,28,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Регистрация пользователя"
+                       FontSize="20" FontWeight="Bold" Foreground="#1E3A5F"/>
+            <TextBlock Text="Заполните все поля корректно"
+                       FontSize="12" Foreground="#888" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+
+            <TextBlock Text="Имя *" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="NameBox"
+                     Text="{Binding Name,
+                            ValidatesOnNotifyDataErrors=True,
+                            UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Style="{StaticResource ErrorStyle}"
+                       Text="{Binding ElementName=NameBox,
+                              Path=(Validation.Errors)[0].ErrorContent}"/>
+
+            <TextBlock Text="Email *" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="EmailBox"
+                     Text="{Binding Email,
+                            ValidatesOnNotifyDataErrors=True,
+                            UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Style="{StaticResource ErrorStyle}"
+                       Text="{Binding ElementName=EmailBox,
+                              Path=(Validation.Errors)[0].ErrorContent}"/>
+
+            <TextBlock Text="Возраст *" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="AgeBox"
+                     Text="{Binding Age,
+                            ValidatesOnNotifyDataErrors=True,
+                            UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Style="{StaticResource ErrorStyle}"
+                       Text="{Binding ElementName=AgeBox,
+                              Path=(Validation.Errors)[0].ErrorContent}"/>
+
+            <TextBlock Text="Пароль *" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="PasswordBox"
+                     Text="{Binding Password,
+                            ValidatesOnNotifyDataErrors=True,
+                            UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Style="{StaticResource ErrorStyle}"
+                       Text="{Binding ElementName=PasswordBox,
+                              Path=(Validation.Errors)[0].ErrorContent}"/>
+
+        </StackPanel>
+
+        <Button Grid.Row="2"
+                Content="Зарегистрироваться"
+                Height="42" Margin="0,20,0,0"
+                FontSize="14" FontWeight="SemiBold"
+                Background="#1E3A5F" Foreground="White"
+                Cursor="Hand"
+                Click="Submit_Click"/>
+
+        <Border Grid.Row="3" x:Name="SuccessBanner"
+                Background="#E8F5E9" BorderBrush="#43A047"
+                BorderThickness="1" CornerRadius="6"
+                Padding="12,8" Margin="0,10,0,0"
+                Visibility="Collapsed">
+            <TextBlock Text="✔ Данные успешно отправлены!"
+                       FontSize="13" FontWeight="SemiBold"
+                       Foreground="#2E7D32"/>
+        </Border>
+    </Grid>
+</Window>
